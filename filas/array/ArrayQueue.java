@@ -1,24 +1,38 @@
 package array;
 
 public class ArrayQueue<E> implements Queue<E> {
-    private int capacity = 100;
-    private E Q[];
+    private int capacity = 20;
+    private E q[];
     private int size;
+    protected int f;
+    protected int n;
     public ArrayQueue(){
-        Q = (E[]) new Object[capacity];
+        f = -1;
+        n = 0;
+        q = (E[]) new Object[capacity];
     }
     public ArrayQueue(int cap){
         capacity = cap;
-        Q = (E[]) new Object[capacity];
+        q = (E[]) new Object[capacity];
     }
 
     public void enqueue(E e) {
-        if(size == capacity)
-            throw new FullQueueException()
-        
+           if(n == capacity-1)
+            System.out.println("fila cheia!");
+            else{
+                if(isEmpty())
+                    f++;
+                q[n++] = e;
+                size++;
+            }
     }
 
-    public E dequeue();
+    public E dequeue() throws EmptyQueueException{
+        if(isEmpty())
+            throw new EmptyQueueException("Queue is empty");
+        E e = q[f++];
+
+    }
     public E front();
     public int size();
     public boolean isEmpty();
