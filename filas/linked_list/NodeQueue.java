@@ -1,107 +1,85 @@
 package linked_list;
-public class NodeQueue<E> implements Queue<E> {
+public class NodeQqueue<E> implements Queue<E> {
   public class Node<E> {
-    private E element;
-    private Node<E> next;
-    private Node<E> prev;
-
-    public Node() {
-      element = null;
-      next = null;
-      prev = null;
-    }
-
-    public Node(E e, Node<E> next, Node<E> prev) {
-      element = e;
-      this.next = next;
-      this.prev = prev;
-    }
-
-    public E getElement() {
-      return element;
-    }
-
-    public void setElement(E newElem) {
-      element = newElem;
-    }
-
-    public void setNext(Node<E> newNext) {
-      next = newNext;
-    }
-
-    public Node<E> getNext() {
-      return next;
-    }
-
-    public void setPrev(Node<E> newPrev) {
-      prev = newPrev;
-    }
-
-    public Node<E> getPrev() {
-      return prev;
-    }
+      private E element;
+      private Node<E> next;
+      public Node() {
+        element = null;
+        next = null;
+      }
+  
+      public Node(E e, Node<E> next) {
+        element = e;
+        this.next = next;
+      }
+  
+      public E getElement() {
+        return element;
+      }
+  
+      public void setElement(E newElem) {
+        element = newElem;
+      }
+  
+      public void setNext(Node<E> newNext) {
+        next = newNext;
+      }
+  
+      public Node<E> getNext() {
+        return next;
+      }
   }
-
-  private Node<E> first;
-  private Node<E> last;
-  private int size;
-
-  public NodeQueue() {
-    size = 0;
-    first = null;
-    last = null;
+  protected Node<E> first;
+  protected Node<E> last;
+  protected int size;
+  public NodeQueue(){
+      size = 0;
+      first = null;
+      last = null;
   }
-
-  public int size() {
+  public int size(){
     return size;
   }
-
-  public boolean isEmpty() {
+  public boolean isEmpty(){
     return size == 0;
   }
-
-  public void enqueue(E e) {
-    Node<E> newNode = new Node<E>();
-    newNode.setElement(e);
-    if (isEmpty()) {
-      first = newNode;
+  public void enqueue(E e){
+      Node<E> newNode = new Node<E>();
+      if(isEmpty())
+          first = newNode;
+      else
+          last.setNext(newNode);
       last = newNode;
-    } else {
-      newNode.setPrev(last);
-      last.setNext(newNode);
-      last = newNode;
-    }
-    size++;
+      size++;
   }
+public E dequeue() throws EmptyQueueException{
+      if(isEmpty())
+          throw new EmptyQueueException("Fila vazia");
+        E e = first.getElement();
+        first = first.getNext();
+        size--;
+      if(isEmpty())
+        last = null;
+        return e;
+}
+public E first() throws EmptyQueueException{
+  if(isEmpty())
+      throw new EmptyQueueException("Fila Vazia");
+  else
+      return first.getElement();
+}
 
-  public E first() throws EmptyQueueException {
-    if (isEmpty())
-      throw new EmptyQueueException("Queue is empty");
-    return last.getElement();
-  }
-
-  public E dequeue() throws EmptyQueueException {
-    if (isEmpty())
-      throw new EmptyQueueException("Queue is empty");
-    E e = first.getElement();
-    first = first.getNext();
-    first.setPrev(null);
-    size--;
-    return e;
-  }
-
-  public String toString() {
-    String s = "[";
-    if (!isEmpty()) {
-      Node<E> aux = first;
-      while (aux != null) {
-        s += aux.getElement();
-        if (aux != last)
-          s += ", ";
-        aux = aux.getNext();
+public String toString(){
+  String s = "[";
+  if(size != 0){
+      Node<E> current = first;
+      while(current != null){
+          s += current.getElement();
+          if(current != last)
+              s += ", ";
       }
-    }
-    s += "]";
-    return s;
   }
-  }
+  s += "]";
+  return s;
+}
+}
