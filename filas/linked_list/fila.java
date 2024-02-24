@@ -8,7 +8,6 @@ public class fila {
           System.out.println(fila);
           System.out.println(fila.dequeue());
           System.out.println(fila);
-          System.out.println(fila.dequeue());
-          System.out.println(fila);
+          
         }
 }

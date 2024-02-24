@@ -1,5 +1,5 @@
 package linked_list;
-public class NodeQqueue<E> implements Queue<E> {
+public class NodeQueue<E> implements Queue<E> {
   public class Node<E> {
       private E element;
       private Node<E> next;
@@ -45,6 +45,8 @@ public class NodeQqueue<E> implements Queue<E> {
   }
   public void enqueue(E e){
       Node<E> newNode = new Node<E>();
+      newNode.setElement(e);
+      newNode.setNext(null);
       if(isEmpty())
           first = newNode;
       else
@@ -71,14 +73,14 @@ public E first() throws EmptyQueueException{
 
 public String toString(){
   String s = "[";
-  if(size != 0){
       Node<E> current = first;
       while(current != null){
           s += current.getElement();
           if(current != last)
               s += ", ";
+          current = current.getNext();
       }
-  }
+
   s += "]";
   return s;
 }
