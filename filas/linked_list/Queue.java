@@ -1,5 +1,5 @@
 package linked_list;
-public interface Queue<E> {
+public interface Queue<E>{
   public void enqueue(E e);
   public E dequeue() throws EmptyQueueException;
 
