@@ -28,6 +28,7 @@ public class NodeQueue<E> implements Queue<E> {
       public Node<E> getNext() {
         return next;
       }
+
   }
   protected Node<E> first;
   protected Node<E> last;
@@ -43,12 +44,15 @@ public class NodeQueue<E> implements Queue<E> {
   public boolean isEmpty(){
     return size == 0;
   }
+  public void setFirst(Node<E> node){
+    first = node;
+  }
   public void enqueue(E e){
       Node<E> newNode = new Node<E>();
       newNode.setElement(e);
       newNode.setNext(null);
       if(isEmpty())
-          first = newNode;
+          setFirst(newNode);
       else
           last.setNext(newNode);
       last = newNode;
@@ -58,7 +62,7 @@ public E dequeue() throws EmptyQueueException{
       if(isEmpty())
           throw new EmptyQueueException("Fila vazia");
         E e = first.getElement();
-        first = first.getNext();
+        setFirst(first.getNext());
         size--;
       if(isEmpty())
         last = null;
