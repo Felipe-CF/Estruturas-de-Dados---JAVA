@@ -1,3 +1,4 @@
+package linkedList;
 public interface stack<E> {
   public void push(E e);
   public E pop() throws EmptyStackException;

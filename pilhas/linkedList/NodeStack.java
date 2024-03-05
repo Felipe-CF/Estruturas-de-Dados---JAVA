@@ -1,3 +1,4 @@
+package linkedList;
 public class NodeStack<E> implements stack<E> {
     public class Node<E>{
         private E element;
@@ -10,7 +11,6 @@ public class NodeStack<E> implements stack<E> {
         public E getElem()  {return element;}
         public Node<E> getNext(){return next;}
     }
-
     private Node<E> top;
     private int size;
     public NodeStack(){
