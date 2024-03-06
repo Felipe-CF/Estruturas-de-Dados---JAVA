@@ -43,6 +43,12 @@ public class NodeStack<E> implements stack<E> {
             throw new EmptyStackException("Pilha vazia");
         return top.getElem();
     }
+    
+    public Node<E> last() throws EmptyStackException{
+        if(size == 0)
+            throw new EmptyStackException("Pilha vazia");
+        return top;
+    }
 
     public String toString(){
         String s = "[";
