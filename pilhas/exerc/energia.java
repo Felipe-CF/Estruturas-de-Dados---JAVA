@@ -1,22 +1,7 @@
 package exerc;
-import java.util.Scanner;
-import java.util.ArrayList;
 import linkedList.NodeStack;
-import linkedList.NodeStack.Node;
-import linkedList.pilha;
 
 public class energia{
-    public class Node<E>{
-        private E element;
-        private Node<E> next;
-        public Node(){  element = null; next = null;}
-        public Node(E e){element = e;}
-
-        public void setElem(E e)    {element = e;}
-        public void setNext(Node<E> n)  {next = n;}
-        public E getElem()  {return element;}
-        public Node<E> getNext(){return next;}
-    }
     public static void main(String[] args){
        NodeStack<Integer> linhas = new NodeStack<Integer>();
        linhas.push(5);
@@ -24,18 +9,30 @@ public class energia{
        linhas.push(2);
        linhas.push(6);
        linhas.push(3);
-       System.out.println(linhas.top());
-       NodeStack<Integer> p = new NodeStack<Integer>();
-       
-
-        do{
-
-            // linhas.last().getNext().getElem() ==> pegar o elemento do penúltimo item empilhado
-            if(linhas.top() < linhas.last().getNext().getElem()){
-
+      // System.out.println(linhas);
+       NodeStack<Integer>.Node<Integer> cursor; // item da pilha
+       NodeStack<Integer> a = new NodeStack<Integer>();
+       NodeStack<Integer> b = new NodeStack<Integer>();
+       do{
+        System.out.println(linhas);
+        cursor = linhas.last();
+        while (cursor.getNext() != null) {
+            if(cursor.getElem() < cursor.getNext().getElem()){
+                a.push(cursor.getElem());
+                b.push(cursor.getNext().getElem());
             }
-        }while(!p.isEmpty());
- 
+            cursor = cursor.getNext();
+        }
+        if(b.isEmpty()){ // se não for precisa fazer +1 linha
+            System.out.println(a);
+            break;
+        }
+        else{ // foi necessário fazer uma nova linha
+            System.out.println(b);
+            linhas = a;
+            b = null;
+        }
+       } while(!a.isEmpty());
 
     }
 }
