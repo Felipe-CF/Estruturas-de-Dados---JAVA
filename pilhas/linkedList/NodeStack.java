@@ -1,4 +1,5 @@
 package linkedList;
+import array.ArrayStack;
 public class NodeStack<E> implements stack<E> {
     public class Node<E>{
         private E element;
@@ -13,10 +14,7 @@ public class NodeStack<E> implements stack<E> {
     }
     private Node<E> top;
     private int size;
-    public NodeStack(){
-        top = null;
-        size = 0;
-    }
+    public NodeStack(){top = null;  size = 0;}
     public int size(){return size;}
     public boolean isEmpty(){return size==0;}
     public void push(E e){
@@ -48,6 +46,21 @@ public class NodeStack<E> implements stack<E> {
         if(size == 0)
             throw new EmptyStackException("Pilha vazia");
         return top;
+    }
+
+    public void inverter() throws EmptyStackException{
+        if(size == 0)
+            throw new EmptyStackException("Pilha vazia");
+        else{
+            NodeStack<E> ahlip = new NodeStack<E>();
+            Node<E> cursor = top;
+            while(cursor != null){
+                ahlip.push(cursor.getElem());
+                cursor = cursor.next;
+            }
+            top = ahlip.last();
+        }
+
     }
 
     public String toString(){

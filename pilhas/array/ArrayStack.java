@@ -1,7 +1,8 @@
 package array;
+import linkedList.NodeStack;
 
 public class ArrayStack<E> implements stack<E> {
-    protected int cap = 8;
+    protected int cap = 1;
     protected E[] a;
     protected int top;
     protected int size;
@@ -11,17 +12,18 @@ public class ArrayStack<E> implements stack<E> {
     public boolean isEmpty(){return size == 0;}
 
     public void push(E e){
-        if(size != cap){
-            a[++top] = e;
-            ++size;
-        }
-        else
+        if(size == cap)
             increaseCapacity(); 
+       a[++top] = e;
+        ++size;
     }
 
     public E pop() throws EmptyStackException{
         if(isEmpty())
         throw new EmptyStackException("Pilha vazia");
+        size--;
+        if(size < (cap*0.25))
+            decreaseCapacity();
         return a[top--]; 
     }
     
@@ -37,7 +39,34 @@ public class ArrayStack<E> implements stack<E> {
         for(int i = 0; i < size; i++)
             newArray[i] = a[i];
         a = newArray;
-        System.out.printf("Capacidade ampliada para %d elementos\n", cap);
+//        System.out.printf("Capacidade ampliada para %d elementos\n", cap);
+    }
+    public void decreaseCapacity(){
+        cap/=2;
+        E[] newArray = (E[]) new Object[cap];
+        for(int i = 0; i < size; i++)
+            newArray[i] = a[i];
+        a = newArray;
+//        System.out.printf("Capacidade reduzida para %d elementos\n", cap);
+    }
+
+    public void inverter() throws EmptyStackException{
+        if(size == 0)
+            throw new EmptyStackException("Pilha vazia");
+        else{
+            ArrayStack<E> ahlip = new ArrayStack<E>();
+            for(int i = top; i >= 0; i--){
+                ahlip.push(a[i]);
+            }
+            a = ahlip.a;
+        }
+
+    }
+
+    public void clear() throws EmptyStackException{
+        top = -1;   
+        size = 0;   
+        a = (E[]) new Object[cap];
     }
 
     public String toString(){

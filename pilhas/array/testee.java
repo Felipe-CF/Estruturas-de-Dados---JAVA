@@ -1,28 +1,27 @@
-package exerc;
+package array;
 import java.util.ArrayList;
+import linkedList.NodeStack;
 import array.ArrayStack;
 
-public class energia{
+public class testee{
     public static void main(String[] args){
         ArrayList<Integer> a1 = new ArrayList<Integer>();
-        ArrayList<Integer> a2;  
-        ArrayStack<Integer> p = new ArrayStack<Integer>(); // pilha usada para armazenar a nova linha de força
-        
-        // a1.add(3);
-        // a1.add(6);
-        // a1.add(2);
-        // a1.add(7);
-        // a1.add(5);
-        a1.add(8);
-        a1.add(6);
-        a1.add(10);
-        a1.add(4);
-        a1.add(1);
-        a1.add(5);
+        ArrayList<Integer> a2;  ArrayStack<Integer> p;
         a1.add(3);
+        a1.add(6);
+        a1.add(2);
+        a1.add(7);
+        a1.add(5);
+        // a1.add(8);
+        // a1.add(6);
+        // a1.add(10);
+        // a1.add(4);
+        // a1.add(1);
+        // a1.add(5);
+        // a1.add(3);
  
         while(a1.size() != 0){
-            a2 = new ArrayList<Integer>();
+            a2 = new ArrayList<Integer>(); p = new ArrayStack<Integer>(); // inicia a2 e p
             if(a1.size() == 1){
                 p.push(a1.getFirst());
             }
@@ -52,9 +51,6 @@ public class energia{
                 }
                // p.inverter(); // inverte a pilha para impressão na ordem certa
                 System.out.println(p);
-                while(!p.isEmpty())
-                    p.pop();
-                //p.clear();
                 if(a2.size() == 1){
                     System.out.println(a2);
                     break;
