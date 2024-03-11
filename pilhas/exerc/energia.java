@@ -24,7 +24,7 @@ public class energia{
         while(a1.size() != 0){
             a2 = new ArrayList<Integer>();
             if(a1.size() == 1){
-                p.push(a1.getFirst());
+                p.push(a1.get(0));
             }
             else{
                 for(int i = 1; i < a1.size();i++){
@@ -53,8 +53,7 @@ public class energia{
                // p.inverter(); // inverte a pilha para impressão na ordem certa
                 System.out.println(p);
                 while(!p.isEmpty())
-                    p.pop();
-                //p.clear();
+                    p.clear();
                 if(a2.size() == 1){
                     System.out.println(a2);
                     break;

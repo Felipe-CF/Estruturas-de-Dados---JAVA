@@ -1,4 +1,6 @@
 package linked_list;
+import deques.deque;
+import linkedList.NodeStack;
 public class NodeQueue<E> implements Queue<E> {
   public class Node<E> {
       private E element;
@@ -33,11 +35,7 @@ public class NodeQueue<E> implements Queue<E> {
   protected Node<E> first;
   protected Node<E> last;
   protected int size;
-  public NodeQueue(){
-      size = 0;
-      first = null;
-      last = null;
-  }
+  public NodeQueue(){size = 0;first = null;last = null;}
   public int size(){
     return size;
   }
@@ -73,6 +71,16 @@ public E first() throws EmptyQueueException{
       throw new EmptyQueueException("Fila Vazia");
   else
       return first.getElement();
+}
+
+public void inverter(){
+  NodeStack<E> pilha = new NodeStack<E>();
+  while(first != null)
+    pilha.push(dequeue());
+   size=0;
+   while(!pilha.isEmpty())
+     enqueue(pilha.pop());
+
 }
 
 public String toString(){

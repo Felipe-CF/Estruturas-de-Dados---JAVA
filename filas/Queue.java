@@ -1,7 +1,7 @@
-package exerc;
 import linkedList.NodeStack;
-public class teste {
+
+public class Queue<E> {
     public static void main(String[] args){
-        
+
     }
 }

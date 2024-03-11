@@ -39,15 +39,15 @@ public class ArrayStack<E> implements stack<E> {
         for(int i = 0; i < size; i++)
             newArray[i] = a[i];
         a = newArray;
-//        System.out.printf("Capacidade ampliada para %d elementos\n", cap);
+    //   System.out.printf("Capacidade ampliada para %d elementos\n", cap);
     }
-    public void decreaseCapacity(){
+    public void decreaseCapacity(){ 
         cap/=2;
         E[] newArray = (E[]) new Object[cap];
         for(int i = 0; i < size; i++)
             newArray[i] = a[i];
         a = newArray;
-//        System.out.printf("Capacidade reduzida para %d elementos\n", cap);
+    //    System.out.printf("Capacidade reduzida para %d elementos\n", cap);
     }
 
     public void inverter() throws EmptyStackException{
