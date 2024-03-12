@@ -1,15 +1,16 @@
+import array.Queue;
 import linkedList.NodeStack;
+import linked_list.EmptyQueueException;
 
-public class filha<E> {
+// fila com 2 pilhas
+public class filha<E> implements Queue<E> {
     // 2 pilhas
     protected NodeStack<E> p1;
     protected NodeStack<E> p2;
     protected int size;
     protected NodeStack<E>.Node<E> first;
-    protected NodeStack<E>.Node<E> last;
     public filha(){
         p1 = new NodeStack<E>();    p2 = new NodeStack<E>();
-        last=p1.last();             first=p2.last();
         size=0;
     }   
     public int size(){
@@ -18,15 +19,53 @@ public class filha<E> {
     public boolean isEmpty(){
         return size == 0;
     }
-    public E first(){
-        return p2.last().getElem();
+    public E first() throws EmptyQueueException{
+        if(p1.isEmpty())
+            throw new EmptyQueueException("Fila vazia");
+        slinkyp2();
+        E temp = p2.last().getElem();
+        slinkyp1(); 
+        return temp;
     }
     public void enqueue(E e){
-        NodeStack<E> p = new NodeStack<E>();
-        NodeStack<E>.Node<E> new_node = p.new Node<E>(e);
         p1.push(e);
+        if(p1.size() == 1)
+            first = p1.last();
+        size++; 
     }
-
-
+    public E dequeue(E e) throws EmptyQueueException{
+        if(p1.isEmpty())
+            throw new EmptyQueueException("Fila vazia");
+        slinkyp2();
+        E temp = p2.pop();
+        first = p2.last();
+        slinkyp1();
+        size--;
+        return temp;
+    }
+    private void slinkyp2(){ // trasnfere para p2
+        while(!p1.isEmpty())
+            p2.push(p1.pop());
+    }
+    private void slinkyp1(){  // trasnfere para p1
+        while(!p2.isEmpty())
+            p1.push(p2.pop());
+    }
+    public String toString(){
+        String s = "[";
+        if(!isEmpty()){
+            slinkyp2();
+            NodeStack<E>.Node<E> cursor = p2.last();
+            while(cursor != null){
+                s += cursor.getElem();
+                if(cursor.getNext() != null){
+                    s += ", ";
+                }
+                cursor = cursor.getNext();
+            }
+            slinkyp1();
+        }
+         return s + "]";
+    }
 
 }
