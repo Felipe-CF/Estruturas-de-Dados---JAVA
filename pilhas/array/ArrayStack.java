@@ -41,7 +41,7 @@ public class ArrayStack<E> implements stack<E> {
         a = newArray;
     //   System.out.printf("Capacidade ampliada para %d elementos\n", cap);
     }
-    public void decreaseCapacity(){ 
+    private void decreaseCapacity(){ 
         cap/=2;
         E[] newArray = (E[]) new Object[cap];
         for(int i = 0; i < size; i++)
@@ -64,6 +64,8 @@ public class ArrayStack<E> implements stack<E> {
     }
 
     public void clear() throws EmptyStackException{
+        if(isEmpty())
+            throw new EmptyQueueException("pilha vazia");
         top = -1;   
         size = 0;   
         a = (E[]) new Object[cap];
