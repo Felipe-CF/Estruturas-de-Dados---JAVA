@@ -1,6 +1,5 @@
-import linkedList.EmptyStackException;
+package linkedList;
 import linked_list.NodeQueue;
-import linkedList.stack;
 
 public class pila<E> implements stack<E>{
     protected NodeQueue<E> f1;

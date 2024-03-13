@@ -1,4 +1,4 @@
-package listas_arranjo;
+package listas.listas_arranjo.array;
 
 public class ArrayIndexList<E> implements IndexList<E> {
     private E[] a;

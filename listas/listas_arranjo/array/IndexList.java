@@ -1,4 +1,4 @@
-package listas_arranjo;
+package listas.listas_arranjo.array;
 
 public interface IndexList<E>{
     public int size();

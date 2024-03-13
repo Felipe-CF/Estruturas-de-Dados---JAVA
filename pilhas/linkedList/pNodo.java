@@ -1,3 +1,4 @@
+package linkedList;
 public class pNodo {
     public static void main(String[] args){
         pila<Object> pilha = new pila<Object>();

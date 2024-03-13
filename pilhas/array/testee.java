@@ -1,16 +1,9 @@
 package array;
-import java.util.ArrayList;
-import linkedList.NodeStack;
-import array.ArrayStack;
+import array.Queue;
+import array.ArrayQueue;
 
-public class testee{
+public class pila{
     public static void main(String[] args){
-          ArrayStack<Integer> p = new ArrayStack<Integer>();
-          for(int i =0;i<10;i++)
-              p.push(i+1);
-            for(int i =0;i<10;i++)
-              p.pop();
-       
-        
+
     }
 }
