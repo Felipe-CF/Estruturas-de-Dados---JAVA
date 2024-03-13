@@ -1,5 +1,4 @@
 package linked_list;
-import deques.deque;
 import linkedList.NodeStack;
 public class NodeQueue<E> implements Queue<E> {
   public class Node<E> {
