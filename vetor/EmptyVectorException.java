@@ -1,7 +1,7 @@
 package vetor;
 
-public class EmptyStackException extends RuntimeException{
-    public EmptyStackException(String error){
+public class EmptyVectorException extends RuntimeException{
+    public EmptyVectorException(String error){
         super(error);
     }
 }
