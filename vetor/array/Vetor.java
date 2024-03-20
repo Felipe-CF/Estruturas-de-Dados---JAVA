@@ -1,5 +1,4 @@
-package vetor;
-//import java.lang.IndexOutOfBoundsException;
+package vetor.array;
 public interface Vetor<E>{
     public E elemAtRank(int i) throws IndexOutOfBoundsException, EmptyVectorException;
     public E replaceAtRank(int i, E e) throws EmptyVectorException, IndexOutOfBoundsException;

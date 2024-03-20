@@ -1,4 +1,4 @@
-package vetor;
+package vetor.array;
 
 public class veltor {
     public static void main(String[] args){
