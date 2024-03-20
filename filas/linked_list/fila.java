@@ -5,8 +5,13 @@ public class fila {
           for (int i = 0; i < 10; i++)
             fila.enqueue(i + 1);
           System.out.println(fila);
-          fila.inverter();
-          System.out.println(fila);
-          
+          System.out.println(fila.size());
+          System.out.println(fila.isEmpty());
+          for (int i = 0; i < 10; i++){
+            System.out.println(fila);
+            System.out.println(fila.size());
+            fila.dequeue();
+          }
+          System.out.println(fila.isEmpty());
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 }

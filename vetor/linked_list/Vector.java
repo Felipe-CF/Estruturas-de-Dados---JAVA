@@ -1,15 +1,15 @@
 package vetor.linked_list;
 import deques.NodeDeck;
 import vetor.array.EmptyVectorException;
-// import linkedList.NodeStack;
 import vetor.array.Vetor;
+
 public class Vector<E> implements Vetor<E>{
     protected NodeDeck<E>.Node<E> first;
     protected NodeDeck<E>.Node<E> last;
     protected int size;
     public Vector(){
-        first.setNext(last); 
-        last.setPrev(first); 
+        first = null;
+        last = null;
         size=0;
     }
     public int size(){
@@ -18,12 +18,12 @@ public class Vector<E> implements Vetor<E>{
     public boolean isEmpty(){
         return size == 0;
     }
-    // private void addFirst(E e){
-    //     NodeDeck<E> outclass = new NodeDeck<E>();
-    //     NodeDeck<E>.Node<E> newNode = outclass.new Node<E>(e);
-    //     newNode.setNext(first.getNext());
-    //     first.setNext(newNode);
-    // }
+    private void addFirst(E e){
+        NodeDeck<E> outclass = new NodeDeck<E>();
+        NodeDeck<E>.Node<E> newNode = outclass.new Node<E>(e);
+        newNode.setNext(first.getNext());
+        first.setNext(newNode);
+    }
     // private void addLast(E e){
     //     NodeDeck<E> outclass = new NodeDeck<E>();
     //     NodeDeck<E>.Node<E> newNode = outclass.new Node<E>(e);
@@ -60,15 +60,15 @@ public class Vector<E> implements Vetor<E>{
             throw new IndexOutOfBoundsException("Indice fora do vetor");
         if(isEmpty())
             throw new EmptyVectorException("Vetor vazio");
-            NodeDeck<E>.Node<E> current;
+        NodeDeck<E>.Node<E> current;
         return returnNode(i).getElement();
     }   
 
     public E replaceAtRank(int i, E e) throws IndexOutOfBoundsException, EmptyVectorException{
-        if(!indexCheck(i))
-            throw new IndexOutOfBoundsException("Indice fora do vetor");
         if(isEmpty())
             throw new EmptyVectorException("Vetor vazio");
+        if(!indexCheck(i))
+            throw new IndexOutOfBoundsException("Indice fora do vetor");
         NodeDeck<E>.Node<E> current = returnNode(i);
         E temp = current.getElement();
         current.setElement(e);
@@ -78,8 +78,9 @@ public class Vector<E> implements Vetor<E>{
     public void insertAtRank(int i, E e) throws IndexOutOfBoundsException, EmptyVectorException{
         if(!indexCheck(i))
             throw new IndexOutOfBoundsException("Indice fora do vetor");
-        if(isEmpty())
-            throw new EmptyVectorException("Vetor vazio");
+        if(isEmpty() && i == 0){
+            addFirst(e);
+        }
         NodeDeck<E>.Node<E> current = returnNode(i);
         current.setElement(e);
         size++;
