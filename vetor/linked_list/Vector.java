@@ -24,15 +24,39 @@ public class Vector<E> implements Vetor<E>{
         newNode.setNext(first.getNext());
         first.setNext(newNode);
     }
-    // private void addLast(E e){
-    //     NodeDeck<E> outclass = new NodeDeck<E>();
-    //     NodeDeck<E>.Node<E> newNode = outclass.new Node<E>(e);
-    //     newNode.setPrev(last.getPrev());
-    //     last.setPrev(newNode);
-    // }
+    private void addLast(E e){
+        NodeDeck<E> outclass = new NodeDeck<E>();
+        NodeDeck<E>.Node<E> newNode = outclass.new Node<E>(e);
+        newNode.setPrev(last.getPrev());
+        last.setPrev(newNode);
+    }
 
-    public boolean indexCheck(int i) throws IndexOutOfBoundsException{
-        return (i > 0) || (i < size); 
+    public void insertBegin(int i, E e){
+        NodeDeck<E>.Node<E> current = first;
+        NodeDeck<E> out = new NodeDeck<E>();
+        NodeDeck<E>.Node<E> newNode = out.new Node<E>(e);
+        while(i > 0){
+            current = current.getNext();
+            i--;
+        }
+        newNode.setNext(current.getNext());
+        newNode.setPrev(current.getPrev());
+        current.getPrev().setNext(newNode);
+        current.getNext().setPrev(newNode);
+    }
+
+    public void insertFinal(int i, E e){
+        NodeDeck<E>.Node<E> current = last;
+        NodeDeck<E> out = new NodeDeck<E>();
+        NodeDeck<E>.Node<E> newNode = out.new Node<E>(e);
+        while(i > 0){
+            current = current.getPrev();
+            i--;
+        }
+        newNode.setNext(current.getNext());
+        newNode.setPrev(current.getPrev());
+        current.getPrev().setNext(newNode);
+        current.getNext().setPrev(newNode);
     }
 
     private NodeDeck<E>.Node<E> returnNode(int i){
@@ -76,11 +100,20 @@ public class Vector<E> implements Vetor<E>{
     }
 
     public void insertAtRank(int i, E e) throws IndexOutOfBoundsException, EmptyVectorException{
-        if(!indexCheck(i))
+        if((isEmpty() && i != 0) || (i < 0) || (i >= size()) )
             throw new IndexOutOfBoundsException("Indice fora do vetor");
-        if(isEmpty() && i == 0){
+        if(i == 0)
             addFirst(e);
-        }
+        else if(i == size()-1)
+            addLast(e);
+        NodeDeck<E>.Node<E> current;
+
+        if(i < size()/2)
+            insertBegin(i, e);
+        else
+            insertFinal(size()-i, e);
+        size++;
+        
         NodeDeck<E>.Node<E> current = returnNode(i);
         current.setElement(e);
         size++;
@@ -111,4 +144,5 @@ public class Vector<E> implements Vetor<E>{
         }
         return s + "]";
     }
+
 }
