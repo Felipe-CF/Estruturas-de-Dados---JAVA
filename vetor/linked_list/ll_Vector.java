@@ -19,12 +19,14 @@ public class ll_Vector<E> implements Vetor<E>{
     protected Node<E> first;
     protected Node<E> last;
     protected int size;
+    protected int cap;
     public ll_Vector(){
         first = new Node<E>();
         last = new Node<E>();
         first.setNext(last);
         last.setPrev(first);
         size=0;
+        cap=1;
     }
     public int size(){
         return size;
