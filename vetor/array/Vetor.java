@@ -6,5 +6,4 @@ public interface Vetor<E>{
     public E removeAtRank(int i) throws EmptyVectorException, IndexOutOfBoundsException;; 
     public int size();
     public boolean isEmpty();
-    public boolean indexCheck(int i) throws IndexOutOfBoundsException;
 }
