@@ -32,47 +32,47 @@ public class ll_List<E> implements ListArray<E> {
     } 
 
     public E first() throws EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se a lista for vazia lance erro
         throw new EmptyListException("Lista vazia");
-      return  first.getElement();
+      return  first.getElement(); // retorna o elemento do primeiro
     }
 
     public E last() throws EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se a lista for vazia lance erro
         throw new EmptyListException("Lista vazia");
-      return  last.getElement();
+      return  last.getElement(); // retorna o elemento do ultimo
     }
 
     public void insertFirst(E e) throws EmptyListException{
       Node<E> newNode = new Node<E>(e);
       if(isEmpty()){
-        first.setNext(newNode);
-        newNode.setPrev(first);
-        newNode.setNext(last);
-        last.setPrev(newNode);
+        first.setNext(newNode); // o proximo do primeiro recebe o novo nó
+        newNode.setPrev(first); // o anterior do  novo nó recebe o primeiro
+        newNode.setNext(last); // o proximo do  novo nó recebe o ultimo
+        last.setPrev(newNode); // o anterior do ultimo recebe o novo nó 
       }
       else{
-        newNode.setNext(first.getNext());
-        newNode.setPrev(first);
-        first.getNext().setPrev(newNode);
-        first.setNext(newNode);
+        newNode.setNext(first.getNext()); // o proximo do novo nó recebe o proximo do primeiro 
+        newNode.setPrev(first); // o anterior do novo nó recebe o primeiro
+        first.getNext().setPrev(newNode); // o anterior, do proximo do primeiro, recebe o novo nó
+        first.setNext(newNode); // o proximo do primeiro recebe o novo nó
       }
       size++;
     }
 
     public void insertLast(E e) throws EmptyListException{
       Node<E> newNode = new Node<E>(e);
-      if(isEmpty()){
-        first.setNext(newNode);
-        newNode.setPrev(first);
-        newNode.setNext(last);
-        last.setPrev(newNode);
+      if(isEmpty()){ // se a lista for vazio
+        first.setNext(newNode); // o proximo do primeiro recebe o novo nó
+        newNode.setPrev(first); // o anterior do  novo nó recebe o primeiro
+        newNode.setNext(last); // o proximo do  novo nó recebe o ultimo
+        last.setPrev(newNode); // o anterior do ultimo recebe o novo nó 
       }
       else{
-        newNode.setPrev(last.getPrev());
-        newNode.setNext(last);
-        last.getPrev().setNext(newNode);
-        last.setPrev(newNode);
+        newNode.setPrev(last.getPrev()); // o anterior do novo nó recebe o anterior do ultimo
+        newNode.setNext(last); // o proximo do novo nó recebe o ultimo
+        last.getPrev().setNext(newNode); // o proximo, do anterior do ultimo, recebe o novo nó
+        last.setPrev(newNode); // o anterior do ultimo recebe o novo nó
       }
       size++;
     }
@@ -114,25 +114,25 @@ public class ll_List<E> implements ListArray<E> {
     }
 
     public void insertBefore(E e) throws EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se a lista for vazia imprime erro
         throw new EmptyListException("Lista vazia");
-      if(first.getNext().getElement() == e)
-        insertFirst(e);
+      if(first.getNext().getElement() == e) // se o elemento referencial for o primeiro
+        insertFirst(e); // insere antes do primeiro
       else {
         Node<E> current = first.getNext();
-        while(current != last){
-          if(current.getElement() == e)
+        while(current != last){ // percorro a lista até o atual seja o ultimo
+          if(current.getElement() == e) // se o elemento referencial for encontrado, sai do loop
             break;
-          current = current.getNext();
+          current = current.getNext(); // atual recebe o proximo
         }
-        if(current == last)
+        if(current == last) // se atual for ultimo, então não existe o elemento na lista
           System.out.println("elemento não existe na lista");
         else{
-          Node<E> newNode = new Node<E>(e);
-          newNode.setPrev(current.getPrev());
-          newNode.setNext(current);
-          current.getPrev().setNext(newNode);
-          current.setPrev(newNode);
+          Node<E> newNode = new Node<E>(e); // elemento referencial encontrado 
+          newNode.setPrev(current.getPrev()); // o anterior do novo nó recebe o anterior do atual
+          newNode.setNext(current); // o proximo do novo nó recebe o atual
+          current.getPrev().setNext(newNode); // o proximo, do anterior do atual, recebe novo nó
+          current.setPrev(newNode); // o anterior do atual recebe novo nó
           size++;
         }
       }
@@ -165,6 +165,24 @@ public class ll_List<E> implements ListArray<E> {
         }
       }
       
+    }
+
+    public E remove(E e) throws EmptyListException{
+      if(isEmpty())
+        throw new EmptyListException("Lista vazia");
+      Node<E> current = first.getNext();
+      while(current != last){
+        if(current.getElement() == e)
+          break;
+        current = current.getNext();
+      }
+      if(current == last)
+        return null;
+      E temp = current.getElement();
+      current.getPrev().setNext(current.getNext());
+      current.getNext().setPrev(current.getPrev());
+      return temp;
+
     }
 
 
