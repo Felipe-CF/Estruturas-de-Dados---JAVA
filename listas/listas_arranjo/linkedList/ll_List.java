@@ -168,19 +168,19 @@ public class ll_List<E> implements ListArray<E> {
     }
 
     public E remove(E e) throws EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se for vazia lança o erro correspondente
         throw new EmptyListException("Lista vazia");
-      Node<E> current = first.getNext();
-      while(current != last){
-        if(current.getElement() == e)
+      Node<E> current = first.getNext(); // crio um nó atual que recebe o próximo do first
+      while(current != last){ // crio um loop a partir do 1° elemento e percorro toda a lista
+        if(current.getElement() == e) // caso ache o elemento referencia, paro o loop, e sigo o resto do codigo
           break;
-        current = current.getNext();
+        current = current.getNext(); // pego o proximo elemento da lista
       }
-      if(current == last)
+      if(current == last) // se o atual percorreu toda a lista e, chegou a se tornar igual o last
         return null;
-      E temp = current.getElement();
-      current.getPrev().setNext(current.getNext());
-      current.getNext().setPrev(current.getPrev());
+      E temp = current.getElement(); // crio um generico e armazeno o elemento do atual
+      current.getPrev().setNext(current.getNext()); // o proximo, do anterior do atual, recebe o proximo do atual
+      current.getNext().setPrev(current.getPrev()); // o anterior, do proximo do atual,  
       return temp;
 
     }
