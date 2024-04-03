@@ -7,9 +7,11 @@ public class ll_veltor {
         for(int i = 0; i < 10; i++) 
             vetor.insertAtRank(i, i+1);
          System.out.println(vetor);
-         for(int i = 0; i < 10; i++) {
-             System.out.println(vetor.removeAtRank(vetor.size()-1));
-         }
+         vetor.replaceAtRank(0, 11);
+        //  System.out.println(vetor.elemAtRank(0));
+        //  for(int i = 0; i < 10; i++) {
+        //      System.out.println(vetor.removeAtRank(vetor.size()-1));
+        //  }
 
     }
 }
