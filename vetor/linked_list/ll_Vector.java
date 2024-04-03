@@ -150,7 +150,7 @@ public class ll_Vector<E> implements Vetor<E>{
     public E removeAtRank(int i) throws IndexOutOfBoundsException, EmptyVectorException{
         if(isEmpty())
             throw new EmptyVectorException("Vetor vazio");
-        if((i < 0) || (i > size))
+        if((i < 0) || (i >= size))
             throw new IndexOutOfBoundsException("Indice fora do vetor");
         
         Node<E> current;
