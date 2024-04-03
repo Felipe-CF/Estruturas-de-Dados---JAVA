@@ -4,14 +4,9 @@ public class ll_veltor {
     public static void main(String[] args){
         ll_Vector<Integer> vetor = new ll_Vector<Integer>();
         System.out.println(vetor);
-        for(int i = 0; i < 10; i++) 
-            vetor.insertAtRank(i, i+1);
-         System.out.println(vetor);
-         vetor.replaceAtRank(0, 11);
-        //  System.out.println(vetor.elemAtRank(0));
-        //  for(int i = 0; i < 10; i++) {
-        //      System.out.println(vetor.removeAtRank(vetor.size()-1));
-        //  }
+        Node<Integer> n = new Node<Integer>(5);
+        vetor.insertAtRank(0, n);
+        System.out.println(vetor);
 
     }
 }

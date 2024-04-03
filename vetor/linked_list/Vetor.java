@@ -1,5 +1,5 @@
-package vetor.array;
-import vetor.array.Node;
+package vetor.linked_list;
+
 public interface Vetor<E>{
     public E elemAtRank(int i) throws IndexOutOfBoundsException, EmptyVectorException;
     public E replaceAtRank(int i, Node<E> n) throws EmptyVectorException, IndexOutOfBoundsException;
