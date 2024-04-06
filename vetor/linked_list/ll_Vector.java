@@ -1,19 +1,15 @@
 package vetor.linked_list;
-import vetor.array.EmptyVectorException;
-import vetor.linked_list.Vetor;
 
 public class ll_Vector<E> implements Vetor<E>{
     protected Node<E> first;
     protected Node<E> last;
     protected int size;
-    protected int cap;
     public ll_Vector(){
         first = new Node<E>();
         last = new Node<E>();
         first.setNext(last);
         last.setPrev(first);
         size=0;
-        cap=1;
     }
     public int size(){
         return size;
@@ -21,17 +17,11 @@ public class ll_Vector<E> implements Vetor<E>{
     public boolean isEmpty(){
         return size == 0;
     }
-    public void increaseCapacity(){
-        cap *= 2;
-    }
-    public void decreaseCapacity(){
-        cap /= 2;
-    }
 
     public E elemAtRank(int i) throws IndexOutOfBoundsException, EmptyVectorException{
         if(isEmpty())
             throw new EmptyVectorException("Vetor vazio");
-        if((i < 0) || (i > size))
+        if((i < 0) || (i >= size))
             throw new IndexOutOfBoundsException("Indice fora do vetor");
 
         Node<E> current;
@@ -43,8 +33,8 @@ public class ll_Vector<E> implements Vetor<E>{
             }
         }
         else {
-            current = last.getPrev();
-            i = (size()-i)-1;
+            current = last;
+            i = (size()-i);
             while(i > 0){
                 current = current.getPrev();
                 i--;
@@ -54,10 +44,10 @@ public class ll_Vector<E> implements Vetor<E>{
 
     }   
 
-    public E replaceAtRank(int i, Node<E> n) throws IndexOutOfBoundsException, EmptyVectorException{ // alterar para NODE
+    public E replaceAtRank(int i, E o) throws IndexOutOfBoundsException, EmptyVectorException{ // alterar para NODE
         if(isEmpty()) // se o vetor for vazio, lança o erro
             throw new EmptyVectorException("Vetor vazio");
-        if((i < 0) || (i > size)) // se o indice passado não for válido, lança o erro
+        if((i < 0) || (i >= size)) // se o indice passado não for válido, lança o erro
             throw new IndexOutOfBoundsException("Indice fora do vetor");
         
         Node<E> current; // crio o nó 'atual' para percorrer o vetor
@@ -71,45 +61,40 @@ public class ll_Vector<E> implements Vetor<E>{
         else {
             // se o indice que queremos estar mais a direta do vetor, percorra ele apartir do anterior
             // do last até o indice passado -1
-            current = last.getPrev();
+            current = last;
             i = size()-i;
             while(i > 0){
                 current = current.getPrev(); 
                 i--;
             }
         } 
-   // crio novo nó
-        current.getPrev().setNext(n); // o proximo, do anterior do atual, recebe o novo nó
-        current.getNext().setPrev(n); // o anterior, do proximo do atual, recebe o novo nó
-        current.setNext(null); // tiro as referências à outros nós do atual
-        current.setPrev(null);
-        return current.getElement(); // retorno seu elemento e garbageColector da fim a ele
+        E temp = current.getElement();
+        Node<E> n = new Node<E>(o); // crio novo nó
+        current.setElement(o);
+        return temp; // retorno seu elemento e garbageColector da fim a ele
 
     }
 
-    public void insertAtRank(int i, Node<E> n) throws IndexOutOfBoundsException, EmptyVectorException{ // alterar para NODE
+    public void insertAtRank(int i, E o) throws IndexOutOfBoundsException, EmptyVectorException{ // alterar para NODE
         if(isEmpty()){ // vector vazio precisa do indiice 0 para iniciar
             if(i == 0){
+                Node<E> n = new Node<E>(o);
                 n.setPrev(first); // novo aponta para o first
                 n.setNext(last); // novo aponta para o last
                 first.setNext(n); // first aponta para o novo
                 last.setPrev(n); // last aponta para o novo
-                size++;
-                if(size == cap)
-                    increaseCapacity();
             }
             else
                 throw new EmptyVectorException("Vetor vazio");    
         } 
         
-        else if(i < 0 || i > size){
+        else if(i < 0 || i > size){ // se o indice passado estiver fora do alcance do vetor
             throw new IndexOutOfBoundsException("Indice fora do vetor");
         }
-        
-        else{
-            Node<E> current;
 
-            if(i < size()/2){ // se o indice estiver no lado esquerdo
+        else{
+            Node<E> current; // crio nó para percorrer o vetor
+            if(i <= size()/2){ // se o indice estiver no lado esquerdo
                 System.out.println(" < size/2");
                 current = first.getNext();
                 while(i > 0){ // percorre até a posição
@@ -117,35 +102,27 @@ public class ll_Vector<E> implements Vetor<E>{
                     i--;
                 }
             }
-            else if(i == size()) { // se o indice for igual ao tamanho
-                n.setNext(last); // o next do novo será o next do atual
-                n.setPrev(last.getPrev()); // o prev do novo será o atual
-                last.getPrev().setNext(n); // o prev do next do atual será o novo
-                last.setPrev(n); // o next do atual é o novo
-            }
             else{
-                i = (size()-i)-1;
-                current = last.getPrev();
+                i = (size()-i);
+                current = last;
                 while( i > 0){
                     current = current.getPrev();
                     i--;
                 }
-                n.setNext(current.getNext()); // o next do novo será o next do atual
-                n.setPrev(current); // o prev do novo será o atual
-                current.getNext().setPrev(n); // o prev do next do atual será o novo
-                current.setNext(n); // o next do atual é o novo
             }
-            
-            size++;
-            if(size == cap)
-                increaseCapacity();
+            Node<E> n = new Node<E>(o);
+            n.setNext(current); // o next do novo será o next do atual
+            n.setPrev(current.getPrev()); // o prev do novo será o atual
+            current.getPrev().setNext(n); // o prev do next do atual será o novo
+            current.setPrev(n); // o next do atual é o novo
         }    
+        size++;
     }
 
     public E removeAtRank(int i) throws IndexOutOfBoundsException, EmptyVectorException{
         if(isEmpty())
             throw new EmptyVectorException("Vetor vazio");
-        if((i < 0) || (i >= cap))
+        if((i < 0) || i >= size)
             throw new IndexOutOfBoundsException("Indice fora do vetor");
         
         Node<E> current;
@@ -157,20 +134,19 @@ public class ll_Vector<E> implements Vetor<E>{
             }
         }
         else {
-            current = last.getPrev();
-            i = (size()-i)-1;
+            current = last;
+            i = (size()-i);
             while(i > 0){
                 current = current.getPrev();
                 i--;
             }
         }
+        E temp = current.getElement();
         current.getPrev().setNext(current.getNext());
         current.getNext().setPrev(current.getPrev());
         current.setNext(null);
         current.setPrev(null);
         size--;
-        if(size== (cap*0.25))
-            decreaseCapacity();
         return current.getElement();
     }
 
@@ -187,10 +163,6 @@ public class ll_Vector<E> implements Vetor<E>{
                     s += ", ";
                 current = current.getNext();
             }
-            // while(current != last){
-            //     System.out.println(current.getElement());
-            //     current = current.getNext();
-            // }
         }
         return s + "]";
     }

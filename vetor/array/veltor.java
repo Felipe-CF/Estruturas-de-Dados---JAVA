@@ -9,10 +9,10 @@ public class veltor {
 
         }
 
-        // vetor.insertAtRank(0, 1);
-        // System.out.println(vetor.replaceAtRank(0, 4));
-        // vetor.insertAtRank(1, 2);
-        // System.out.println(vetor.removeAtRank(1));
-        // System.out.println(vetor);
+         vetor.insertAtRank(0, 1);
+         System.out.println(vetor.replaceAtRank(0, 4));
+         vetor.insertAtRank(1, 2);
+         System.out.println(vetor.removeAtRank(1));
+         System.out.println(vetor);
     }
 }

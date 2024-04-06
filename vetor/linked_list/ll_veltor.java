@@ -2,17 +2,16 @@ package vetor.linked_list;
 
 public class ll_veltor {
     public static void main(String[] args){
-        ll_Vector<Integer> vetor = new ll_Vector<Integer>();
-        System.out.println(vetor);
-        Node<Integer> n = new Node<Integer>();
-        for(int i = 0; i < 17; i++){
-            n = new Node<Integer>(i+1);
-            vetor.insertAtRank(i, n);
-        }
-        // n = new Node<Integer>(3);
-        // vetor.replaceAtRank(0, n);
-
+        ll_Vector<Object> vetor = new ll_Vector<Object>();
          System.out.println(vetor);
+        for(int i = 0; i < 10; i++){
+             vetor.insertAtRank(i, i+1);
+        }
 
+        vetor.replaceAtRank(5, 15);
+         System.out.println(vetor.removeAtRank(9));
+         System.out.println(vetor.elemAtRank(9));
+         System.out.println(vetor.size());
+         System.out.println(vetor.isEmpty());
     }
 }

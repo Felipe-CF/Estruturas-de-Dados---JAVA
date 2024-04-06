@@ -15,18 +15,48 @@ public class Lista<E> {
       a = (E[]) new Object[cap];
   }
 
-    public int size();
-    public boolean isEmpty();
-    public boolean isFirst(Node<E> n) throws EmptyVectorException;
-    public boolean isLast(Node<E> n) throws EmptyVectorException;
-    public E first() throws EmptyVectorException;
-    public E last() throws  EmptyVectorException;
-    public E before(Node<E> n) throws EmptyVectorException;
+    public int size(){
+      return size;
+    }
+    
+    public boolean isEmpty(){
+      return size == 0;
+    }
+    
+    public boolean isFirst(Node<E> n) throws EmptyListException{
+      return n.getElement() == first.getNext().getElement();
+    }
+    
+    public boolean isLast(Node<E> n) throws EmptyListException{
+      return n.getElement() == last.getPrev().getElement();
+    }
+    
+    public E first() throws EmptyVectorException{
+      return first.getNext().getElement();
+    }
+    public E last() throws  EmptyVectorException{
+      return last.getPrev().getElement();
+    }
+    
+    public E before(Node<E> n) throws EmptyVectorException{
+      if(isEmpty())
+        throw new EmptyListException("lista vazia");
+      for(int i = 0; i < size; i++){
+        if()
+      }
+    }
     public E after(Node<E> n) throws EmptyVectorException;
     
     public void insertBefore(Node<E> n, E e) throws  EmptyVectorException;
     public void insertAfter(Node<E> n, E e) throws  EmptyVectorException;    
-    public void insertFirst(Node<E> n) throws  EmptyVectorException;
+    public void insertFirst(Node<E> n) throws  EmptyVectorException{
+      
+      size++;
+      if(size == cap)
+        increaseCapacity();
+      if()
+      for()
+    }
     public void insertLast(Node<E> n) throws  EmptyVectorException;    
     
     public E remove(Node<E> n) throws EmptyVectorException;
