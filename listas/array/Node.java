@@ -4,7 +4,6 @@ public class Node<E> {
         private E element;
         private Node<E> next;
         private Node<E> prev;
-        
         public Node() {element = null; next = null; prev = null;}
         public Node(E e) {element = e;}
         public E getElement() {return element;}
