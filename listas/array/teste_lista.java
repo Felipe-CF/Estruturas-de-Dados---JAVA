@@ -1,5 +1,7 @@
 package listas.array;
 
+import listas.linked_list.Lista;
+
 public class teste_lista {
     public static void main(String args[]){
         Lista<Object> lista = new Lista<Object>();

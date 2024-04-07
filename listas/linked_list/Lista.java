@@ -1,14 +1,16 @@
 package listas.linked_list;
-import listas.array.Node;
+
 
 public class Lista<E> {
-    protected Node<E>[] a;
     protected int size;
-    protected int cap;
+    protected Node<E> first;
+    protected Node<E> last;
     public Lista(){
       size = 0;
-      cap = 1;
-      a =  new Node[cap];
+      first = new Node<E>();
+      last = new Node<E>();
+      first.setNext(last);
+      last.setPrev(first);
   }
 
     public int size(){
@@ -19,80 +21,55 @@ public class Lista<E> {
       return size == 0;
     }
     
-    public void increaseCapacity(){
-      cap*=2;
-        Node<E>[] newArray =  new Node[cap];
-        for(int i = 0; i < size; i++)
-            newArray[i] = a[i];
-        a = newArray;
-    }
-    
-    public void decreaseCapacity(){
-      cap/=2;
-        Node<E>[] newArray =  new Node[cap];
-        for(int i = 0; i < size; i++)
-            newArray[i] = a[i];
-        a = newArray;
-    }
-
     public boolean isFirst(Node<E> n) throws EmptyListException{
-      return n.getElement() == a[0].getElement();
+      return n.getElement() == first.getElement();
     }
     
     public boolean isLast(Node<E> n) throws EmptyListException{
-      return n.getElement() == a[size-1].getElement();
+      return n.getElement() == last.getElement();
     }
     
     public E first() throws EmptyListException{
       if(isEmpty())
         throw new EmptyListException("Lista vazia");
-      return a[0].getElement();
+      return first.getElement();
     }
     
     public E last() throws  EmptyListException{
       if(isEmpty())
         throw new EmptyListException("Lista vazia");
-      return a[size-1].getElement();
+      return last.getElement();
     }
     
     public E before(Node<E> n) throws EmptyListException{
       if(isEmpty()) // se vazio...
         throw new EmptyListException("Lista vazia"); // imprime o erro
-      if(a[size-1].getElement() == n.getElement()) // se o n for o ultimo nó...
-        throw new IndexOutOfBoundsException("Sem elementos além do ultimo"); // imprime o erro
+      if(n.getElement() == first.getElement() || size == 1) // se o n for o primeiro nó...
+        throw new IndexOutOfBoundsException("Sem elementos antes do primeiro"); // imprime o erro
 
-      int ind_n = -1; // crio uma var vazia para o indice referencia da lista
-      for(int i = 0; i < size; i++){ // percorro a lista
-        if(a[i].getElement() == n.getElement()){ // se achei o nó referencia
-          ind_n = i-1; // pego a posição subsequente a ele 
-          break; // paro o loop
-        }
+      Node<E> current = last.getPrev(); // crio um nó para percorer a lista começando do ultimo
+      while(current != first.getNext()){ // até que chegue no primeiro elemento
+        if(current.getElement() == n.getElement()) // se o atualelemento for igual ao elemento de n
+          return current.getPrev().getElement(); // retorno o anterior do elemento atual
+        current = current.getPrev(); // passo para o proximo nó
       }
-      if(ind_n == -1){  // se não achou o nó...{}
-        System.err.println("Nó não encontrado"); // imprime o erro
-        return null; // e retorna null
-      } 
-        return a[ind_n].getElement(); // retorno o proximo de n
+      return null; // se não achei o elemento eu retorno null
+      
     }
     
     public E after(Node<E> n) throws EmptyListException{
       if(isEmpty()) // se vazio...
         throw new EmptyListException("Lista vazia"); // imprime o erro
-      if(a[size-1].getElement() == n.getElement()) // se o n for o ultimo nó...
-        throw new IndexOutOfBoundsException("Sem elementos além do ultimo"); // imprime o erro
+      if(n.getElement() == first.getElement() || size == 1) // se o n for o primeiro nó...
+        throw new IndexOutOfBoundsException("Sem elementos antes do primeiro"); // imprime o erro
 
-      int ind_n = -1; // crio uma var vazia para o indice referencia da lista
-      for(int i = 0; i < size; i++){ // percorro a lista
-        if(a[i].getElement() == n.getElement()){ // se achei o nó referencia
-          ind_n = i+1; // pego a posição subsequente a ele 
-          break; // paro o loop
-        }
+      Node<E> current = first.getNext(); // crio um nó para percorer a lista começando do primeiro
+      while(current != last.getPrev()){ // até que chegue no ultimo elemento
+        if(current.getElement() == n.getElement()) // se o atual elemento for igual ao elemento de n
+          return current.getNext().getElement(); // retorno o proximo elemento 
+        current = current.getNext(); // passo para o proximo nó
       }
-      if(ind_n == -1){  // se não achou o nó...{}
-        System.err.println("Nó não encontrado"); // imprime o erro
-        return null; // e retorna null
-      } 
-        return a[ind_n].getElement(); // retorno o proximo de n
+      return null; // se não achei o elemento eu retorno null
 
   }
     
@@ -101,40 +78,19 @@ public class Lista<E> {
         throw new EmptyListException("Lista vazia"); // imprime o erro
 
       Node<E> newNode = new Node<E>(e); // crio o novo nó
-
-      if(n.getElement() == a[0].getElement()){ // se n for o first
-        size++; // aumento o tamanho do array
-        if(size() == cap)  // se estiver cheio
-          increaseCapacity(); // aumento a capacidade
-
-        for(int i = size-1; i >= 0; i--) // percorro o array... 
-          a[i+1] = a[i]; // copiando o nó i para a posição i+1
-        a[0] = newNode; // adiciono ele antes do first
-      }
-
-      else{
-
-        int ind_n = -1; // crio uma var vazia para o indice referencia da lista
-        for(int i = 0; i < size; i++){ // percorro a lista
-          if(a[i].getElement() == n.getElement()){ // se achei o nó referencia
-            ind_n = i; // pego a posição dele 
-            break; // paro o loop
-          }
+      Node<E> current = last.getPrev();
+      while(current != first){ // até que chegue no primeiro elemento sentinela
+        if(current.getElement() == n.getElement()){ // se o atual elemento for igual ao elemento de n
+          newNode.setNext(current); // o proximo do novo nó recebe o atual 
+          newNode.setPrev(current.getPrev()); // o anterior  do novo nó recebe o anterior do atual 
+          current.getPrev().setNext(newNode); // o proximo, do anterior do atual, recebe o novo nó 
+          current.setPrev(newNode); // o  anterior do atual, recebe o novo nó 
+          size++;
+          return;
         }
-
-        if(ind_n == -1) // se não achou o nó...
-          System.err.println("Nó não encontrado"); // imprime o erro
-
-        else{ // se achou...
-          for(int i = size-1; i > ind_n-1; i--) // percorro o array... 
-              a[i+1] = a[i]; // copiando o nó i para a posição i+1
-          a[ind_n] = newNode; // insiro na posição certa o novo nó
-          size++; // aumento o tamanho
-          if(size() == cap) // se estiver cheio...
-            increaseCapacity(); // amplio
-        }
-        
+        current = current.getPrev(); // passo para o nó anterior
       }
+      
     }
 
     public void insertAfter(Node<E> n, E e) throws  EmptyListException{
@@ -142,119 +98,104 @@ public class Lista<E> {
         throw new EmptyListException("Lista vazia"); // imprime o erro
 
       Node<E> newNode = new Node<E>(e); // crio o novo nó
-      if(n.getElement() == a[size-1].getElement()){ // se n for o last
-        a[size++] = newNode; // adiciono ele a frente do last
-        if(size() == cap)  // se estiver cheio
-          increaseCapacity(); // aumento a capacidade
-      }
-      else{
-
-        int ind_n = -1; // crio uma var vazia para o indice referencia da lista
-        for(int i = 0; i < size; i++){ // percorro a lista
-          if(a[i].getElement() == n.getElement()){ // se achei o nó referencia
-            ind_n = i; // pego a posição  dele 
-            break; // paro o loop
-          }
-
+      Node<E> current = first.getNext();
+      while(current != last){ // até que chegue no ultimo elemento sentinela
+        if(current.getElement() == n.getElement()){ // se o atual elemento for igual ao elemento de n
+          newNode.setNext(current.getNext()); // o proximo do novo nó recebe o proximo do atual 
+          newNode.setPrev(current); // o anterior do novo nó recebe o atual 
+          current.getNext().setPrev(newNode); // o anterior, do proximo do atual, recebe o novo nó 
+          current.setNext(newNode); // o  proximo do atual, recebe o novo nó 
+          size++;
+          return;
         }
-
-        if(ind_n == -1) // se não achou o nó...
-          System.err.println("Nó não encontrado"); // imprime o erro
-
-        else{ // se achou...
-          for(int i = size-1; i > ind_n; i--) // percorro o array... 
-              a[i+1] = a[i]; // copiando o nó i para a posição i+1
-          a[ind_n+1] = newNode; // insiro na posição certa o novo nó
-          size++; // aumento o tamanho
-          if(size() == cap) // se estiver cheio...
-            increaseCapacity(); // amplio
-        }
-        
+        current = current.getPrev(); // passo para o nó seguinte
       }
     }  
 
     public void insertFirst(Node<E> n) throws  EmptyListException{
       if(size() == 0){ // se a lista estiver vaziaa
-        a[0] = n; //  insiro o 1° nó
-        size++; //amplio o tamanho da lista
-        increaseCapacity(); // amplio a capacidade da lista
+        first.setNext(n); // o proximo do primeiro sentinela recebe n
+        last.setPrev(n); // o anterior do ultimo sentinela recebe n
       }
-      else{ // se não for
-        if(size == cap-1) // checo se a inserção vai encher a lista
-          increaseCapacity(); // se sim, amplio a capacidade da lista
-
-        for(int i = size; i > 0; i--) // percorro a lista 
-          a[i] = a[i-1]; // copiando o nó para a posição seguinte
-        a[0] = n; // adiciono o nó na primeira posição
-        size++;  //  amplio a capacidade da lista
-      }
+      else { // se não for
+        n.setPrev(first); // o anterior de n recebe o anterior do ultimo sentinela
+        n.setNext(first.getNext()); // o proximo de n recebe o ultimo sentinela
+        first.getNext().setPrev(n); // o anterior, do proximo do primeiro sentinela, recebe n
+        first.setNext(n); // o proximo do primeiro sentinela recebe n
+      } 
+      size++; // aumento o tamanho
+        
     }
 
     public void insertLast(Node<E> n) throws  EmptyListException{
       if(size() == 0){ // se a lista estiver vaziaa
-        a[0] = n; //  insiro o 1° nó
-        size++; //amplio o tamanho da lista
-        increaseCapacity(); // amplio a capacidade da lista
+        first.setNext(n); // o proximo do primeiro sentinela recebe n
+        last.setPrev(n); // o anterior do ultimo sentinela recebe n
       }
-      else{ // se não for
-        if(size == cap) // checo se a lista está cheia
-          increaseCapacity(); // se sim, amplio a capacidade da lista
-        a[size] = n; // o elemento no indice size recebe o nó
-        size++;  //  amplio a capacidade da lista
-      }
+      else { // se não for
+        n.setPrev(last.getPrev()); // o anterior de n recebe o anterior do ultimo sentinela
+        n.setNext(last); // o proximo de n recebe o ultimo sentinela
+        last.getPrev().setNext(n); // o proximo, do anterior do ultimo sentinela, recebe n
+        last.setPrev(n); // o anterior do ultimo sentinela recebe n
+      } 
+      size++; // aumento o tamanho
     }    
     
     public E remove(Node<E> n) throws EmptyListException{
           if(size == 0) // se a lista for vazia
             throw new EmptyListException("Lista vazia"); // imprime o erro
-      
-          // se não for...
-          Node<E>[] new_a = new Node[size-1]; // crio um novo array com o tamanho do atual -1
-          E r = null; // crio um nó que irá retornar o elemento removido
-          int j = -1; // crio um contador para preencher o new_a
-
-          for(int i = 0; i < size; i++){ // percorro o array a em busca do elemento do nó passado
-              // se ele for o elemento que estou buscando, pego o indice dele, seu conteudo 
-              // e paro o loop
-              if(n.getElement() == a[i].getElement()){
-                  r = a[i].getElement(); 
-                   j = i;
-                  break;
-              } 
+          E temp = null; // cria a variavel de retorno
+          if(isFirst(n)){ // se n for o primeiro nó
+            Node<E> current = first.getNext();  // atual recebe o primeiro
+            current.getNext().setPrev(first); // o anterior, do proximo do atual, recebe o primeiro sentinela
+            first.setNext(current.getNext()); // o proximo, do primeiro sentinela, recebe o proximo do atual
+            current.setNext(null); // retiro as referencias do atual
+            current.setPrev(null);
+            temp = current.getElement(); // pego seu elemento
+            size--; // reduzo o tamanho
           }
-          
-          if(r != null){ // se a variavel de retorno foi preenchida
-            int ind = 0; // crio um indice
-            for(int i = 0; i < size; i++) { // percorro o array a pegando todos os elementos (exceto o removido)
-              if(i != j)
-                new_a[ind++] = a[i]; // e passando eles para new_a
-            }
-            size--; // diminuo o tamanho
-            if(size == (cap*0.25)) // se for preciso reduzir a capacidade...
-              decreaseCapacity(); // reduzo
+          else if(isLast(n)){ // se n for o ultimo nó
+            Node<E> current = last.getPrev(); // atual recebe o ultimo
+            current.getPrev().setNext(last); // o proximo, do anterior do atual, recebe o ultimo sentinela
+            last.setPrev(current.getPrev());  // o anterior, do ultimo sentinela, recebe o anterior do atual
+            current.setNext(null); // retiro as referencias do atual
+            current.setPrev(null);
+            temp = current.getElement();  // pego seu elemento
+            size--; // reduzo o tamanho
           }
-          a = new_a; // mudo a referencia de a
-          return r; // retorno o elemento removido ou null se não foi encontrado
-          
+          else{ // se estiver no meio...
+            Node<E> current = first.getNext().getNext();  // atual recebe o 2° nó da lista 
+            while(current.getElement() != last.getPrev()){ // percorre a lista até o penultimo nó
+              if(current.getElement() == n.getElement()){  // se achei o nó referencia
+                current.getPrev().setNext(current.getNext()); // o proximo, do anterior do atual, recebe o proximo do atual
+                current.getNext().setPrev(current.getPrev()); // o anterior, do proximo do atual, recebe o anterior do atual
+                current.setNext(null);// retiro as referencias do atual
+                current.setPrev(null);
+                temp = current.getElement(); // pego seu elemento
+                size--; // reduzo o tamanho
+                break; // paro o loop
+              }
+            } 
+          }
+          return temp; // retorno o elemento removido ou null
 
     }
 
     public E replaceElement(Node<E> n, E e) throws EmptyListException{
         if(size == 0) // se for vazia...
           throw new EmptyListException("Lista vazia"); // imprimo o erro
-        E temp = null; // crio uma variavel temporaria recebe primeiro null
-        Node<E> newNode = new Node<E>(e); // crio um no nó com o valor a ser colocado na lista
 
-        for(int i = 0; i < size; i++){ // percorro a lista
-          if(a[i].getElement() == n.getElement()){ // e se achar o nó n
-            temp = a[i].getElement(); // armazeno o valor dele para retorno
-            a[i] = newNode; // e substituo n pelo novo nó
-            break; // paro o loop
+        E temp = null; // crio uma variavel temporaria nula
+        Node<E> current = first.getNext(); // crio um no nó com o valor a ser colocado na lista
+        while(current != last){ // percorro a lista até o ultimo nó sentinela
+          if(n.getElement() == current.getElement()){ // se achei o nó referencia
+            temp = current.getElement(); // pego o seu elemnto
+            current.setElement(e); // "seto" um novo elemento
+            break; // paro o laço
           }
+          current = current.getNext(); // passo para o proximo do atual
         }
-        if(temp == null) // se o valor não for encontrado...
-          System.err.println("Valor não encontrado na lista"); // imprimo o erro
-        return temp; // retorno temp
+        return temp; // retorno elemento removido ou null
     }
 
     public void swapElements(Node<E> n, Node<E> q) throws EmptyListException{
@@ -263,35 +204,32 @@ public class Lista<E> {
       if(size() == 1) // se a lista tiver 1 nó...
         throw new EmptyListException("Lista com apenas um elemento"); // imprime o erro
 
-      int ind_n = -1; // crio uma variavel para armazenar a posição do nó n
-      int ind_q = -1; // crio uma variavel para armazenar a posição do nó q
-      // o valor -1 indica que não tem um indice do array a
-
-      for(int i =0; i < size; i++){ // percorro o loop...
-          if(a[i].getElement() == n.getElement() && ind_n == -1) // se acho o nó e o ind_n não foi preenchido
-            ind_n = i; // guardo i
-          else if(a[i].getElement() == q.getElement() && ind_q == -1) // se acho o nó e o ind_q não foi preenchido
-            ind_q = i; // guardo i
+      Node<E> current = first.getNext(); // atual recebe o primeiro nó
+      while(current != last){ // percorre a lista até o ultimo sentinela
+        if(n.getElement() != null && current.getElement() == n.getElement()){ // se n for achado e não tiver sido "setado"
+          current.setElement(q.getElement()); //  "seto" o elemento de q na posição atual 
+          q.setElement(null); // e deixo ele "vazio" para não ser repetido esse passo
+        }
+        if(q.getElement() != null && current.getElement() == q.getElement()){ // se q for achado e não tiver sido "setado"
+          current.setElement(n.getElement()); //  "seto" o elemento de n na posição atual 
+          n.setElement(null); // e deixo ele "vazio" para não ser repetido esse passo
+        }
+        if(q.getElement() == null && n.getElement() == null) // se os dois já forem trocados...
+          break; // paro o loop
+        current = current.getNext(); // passo para o proximo nó
       }
-
-      if(ind_n == -1 && ind_q == -1) // se os dois forem vazios
-        System.err.println("Nenhum elemento encontrado");
-      else if(ind_n == -1 || ind_q == -1) // se um dos dois for vazio
-        System.err.println("Um dos elementos não encontrado");
-
-      else{ // os 2 foram encontrados e trocar de posição
-        a[ind_n] = q;
-        a[ind_q] = n;
-      }
-
     }
     
     public String toString(){
       String s = "[";
-      for(int i = 0; i < size; i++){
-          s += a[i].getElement();
-          if(i != size-1)
-              s += ", ";
+      if(size > 0){
+        Node<E> current = first.getNext();
+        while(current != last){
+          s += current.getElement();
+          if(current.getNext() != last)
+            s += ", ";
+          current = current.getNext();
+        }
       }
       s += "]";
       return s;
