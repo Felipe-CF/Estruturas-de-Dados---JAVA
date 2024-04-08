@@ -116,6 +116,8 @@ public class Lista<E> {
       if(size() == 0){ // se a lista estiver vaziaa
         first.setNext(n); // o proximo do primeiro sentinela recebe n
         last.setPrev(n); // o anterior do ultimo sentinela recebe n
+        n.setPrev(first); // o anterior de n recebe o primeiro sentinela
+        n.setNext(last);  // o proximo de n recebe o ultimo sentinela
       }
       else { // se não for
         n.setPrev(first); // o anterior de n recebe o anterior do ultimo sentinela
@@ -131,6 +133,8 @@ public class Lista<E> {
       if(size() == 0){ // se a lista estiver vaziaa
         first.setNext(n); // o proximo do primeiro sentinela recebe n
         last.setPrev(n); // o anterior do ultimo sentinela recebe n
+        n.setPrev(first); // o anterior do nó recebe o primeiro sentinela
+        n.setNext(last); // o proximo do nó recebe o ultimo sentinela
       }
       else { // se não for
         n.setPrev(last.getPrev()); // o anterior de n recebe o anterior do ultimo sentinela
@@ -145,38 +149,20 @@ public class Lista<E> {
           if(size == 0) // se a lista for vazia
             throw new EmptyListException("Lista vazia"); // imprime o erro
           E temp = null; // cria a variavel de retorno
-          if(isFirst(n)){ // se n for o primeiro nó
-            Node<E> current = first.getNext();  // atual recebe o primeiro
-            current.getNext().setPrev(first); // o anterior, do proximo do atual, recebe o primeiro sentinela
-            first.setNext(current.getNext()); // o proximo, do primeiro sentinela, recebe o proximo do atual
-            current.setNext(null); // retiro as referencias do atual
-            current.setPrev(null);
-            temp = current.getElement(); // pego seu elemento
-            size--; // reduzo o tamanho
-          }
-          else if(isLast(n)){ // se n for o ultimo nó
-            Node<E> current = last.getPrev(); // atual recebe o ultimo
-            current.getPrev().setNext(last); // o proximo, do anterior do atual, recebe o ultimo sentinela
-            last.setPrev(current.getPrev());  // o anterior, do ultimo sentinela, recebe o anterior do atual
-            current.setNext(null); // retiro as referencias do atual
-            current.setPrev(null);
-            temp = current.getElement();  // pego seu elemento
-            size--; // reduzo o tamanho
-          }
-          else{ // se estiver no meio...
-            Node<E> current = first.getNext().getNext();  // atual recebe o 2° nó da lista 
-            while(current.getElement() != last.getPrev()){ // percorre a lista até o penultimo nó
+            Node<E> current = first.getNext();  // atual recebe o 1° nó da lista 
+
+            while(current != last){ // percorre a lista até o ultimo nó
               if(current.getElement() == n.getElement()){  // se achei o nó referencia
+                temp = current.getElement(); // pego seu elemento
                 current.getPrev().setNext(current.getNext()); // o proximo, do anterior do atual, recebe o proximo do atual
                 current.getNext().setPrev(current.getPrev()); // o anterior, do proximo do atual, recebe o anterior do atual
                 current.setNext(null);// retiro as referencias do atual
                 current.setPrev(null);
-                temp = current.getElement(); // pego seu elemento
                 size--; // reduzo o tamanho
                 break; // paro o loop
               }
+              current = current.getNext();
             } 
-          }
           return temp; // retorno o elemento removido ou null
 
     }
@@ -205,17 +191,30 @@ public class Lista<E> {
         throw new EmptyListException("Lista com apenas um elemento"); // imprime o erro
 
       Node<E> current = first.getNext(); // atual recebe o primeiro nó
+      while(current != last){
+        if(current.getElement() == n.getElement()){ // se n for achado e não tiver sido "setado"
+          current.getPrev().setNext(q);
+          current.getNext().setPrev(q); // insiro o nó q na lista
+          q.setNext(current.getNext()); // e removo o atual
+          q.setPrev(current.getPrev());
+          current.setNext(null);
+          current.setPrev(null);
+          break;
+        }
+        current = current.getNext(); // passo para o proximo nó
+      }
+
+      // Node<E> current2 = first.getNext(); // atual recebe o primeiro nó
       while(current != last){ // percorre a lista até o ultimo sentinela
-        if(n.getElement() != null && current.getElement() == n.getElement()){ // se n for achado e não tiver sido "setado"
-          current.setElement(q.getElement()); //  "seto" o elemento de q na posição atual 
-          q.setElement(null); // e deixo ele "vazio" para não ser repetido esse passo
+        if(current.getElement() == q.getElement()){ // se q for achado e não tiver sido "setado"
+        current.getPrev().setNext(n);
+        current.getNext().setPrev(n); // insiro o nó n na lista
+        n.setNext(current.getNext()); // e removo o atual
+        n.setPrev(current.getPrev());
+        current.setNext(null);
+        current.setPrev(null);
+        break;
         }
-        if(q.getElement() != null && current.getElement() == q.getElement()){ // se q for achado e não tiver sido "setado"
-          current.setElement(n.getElement()); //  "seto" o elemento de n na posição atual 
-          n.setElement(null); // e deixo ele "vazio" para não ser repetido esse passo
-        }
-        if(q.getElement() == null && n.getElement() == null) // se os dois já forem trocados...
-          break; // paro o loop
         current = current.getNext(); // passo para o proximo nó
       }
     }
