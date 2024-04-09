@@ -190,33 +190,76 @@ public class Lista<E> {
       if(size() == 1) // se a lista tiver 1 nó...
         throw new EmptyListException("Lista com apenas um elemento"); // imprime o erro
 
-      Node<E> current = first.getNext(); // atual recebe o primeiro nó
-      while(current != last){
-        if(current.getElement() == n.getElement()){ // se n for achado e não tiver sido "setado"
-          current.getPrev().setNext(q);
-          current.getNext().setPrev(q); // insiro o nó q na lista
-          q.setNext(current.getNext()); // e removo o atual
-          q.setPrev(current.getPrev());
-          current.setNext(null);
-          current.setPrev(null);
-          break;
-        }
-        current = current.getNext(); // passo para o proximo nó
+      // checar se os nós passados estão presentes na lista
+      boolean in_n = false; // variavel para armazenar se n está na lista
+      boolean in_q = false; // variavel para armazenar se q está na lista
+      Node<E> find = first.getNext();
+      while(find != last){ // percorro a lista...
+        if(find.getElement() == n.getElement() && !in_n) // e se "n" estiver...
+          in_n = true; // confirmo
+        else if(find.getElement() == q.getElement() && !in_q) // e se "q" estiver...
+          in_q = true; // confirmo
+        find = find.getNext();
       }
 
-      // Node<E> current2 = first.getNext(); // atual recebe o primeiro nó
-      while(current != last){ // percorre a lista até o ultimo sentinela
-        if(current.getElement() == q.getElement()){ // se q for achado e não tiver sido "setado"
-        current.getPrev().setNext(n);
-        current.getNext().setPrev(n); // insiro o nó n na lista
-        n.setNext(current.getNext()); // e removo o atual
-        n.setPrev(current.getPrev());
-        current.setNext(null);
-        current.setPrev(null);
-        break;
+      if(in_n && in_q){ // se os dois nós estão na lista...
+        E aux = null; // crio uma variavel para armazenar o valor que foi trocado de lugar
+        // sem ela ocorria uma redundancia (um elemento mudava de posição, depois era revertido) 
+        // ou apenas uma posição era trocada
+        Node<E> current = first.getNext(); // atual recebe o primeiro nó
+        Node<E> cont = new Node<E>();
+        while(current != last){ // percorro a lista...
+          if(current.getElement() == n.getElement()){ // se n for achado...
+            aux = q.getElement(); // aux recebe o valor dele
+            n.setElement(null); // deixo n nulo
+
+            current.getPrev().setNext(q); // insiro o nó q na lista
+            current.getNext().setPrev(q); 
+            q.setNext(current.getNext()); // e removo o atual
+            q.setPrev(current.getPrev());
+            cont = current.getNext(); // pego o proximo elemento para continuar com a troca
+            break; // interrompo o loop
+          }
+          else if(current.getElement() == q.getElement()){ // se q for achado ...
+            aux = n.getElement(); // aux recebe o valor dele
+            q.setElement(null); // deixo q nulo
+
+            current.getPrev().setNext(n); // insiro o nó n na lista
+            current.getNext().setPrev(n); 
+            n.setNext(current.getNext()); // e removo o atual
+            n.setPrev(current.getPrev());
+            cont = current.getNext();// pego o proximo elemento para continuar com a troca
+            break; // interrompo o loop
+          }
+  
+          current = current.getNext(); // passo para o proximo nó e continuo o loop
         }
-        current = current.getNext(); // passo para o proximo nó
+        System.out.println(cont.getElement());
+        while(current != last){
+          if(current.getElement() == aux && n.getElement() == null){ // se n for achado e já tiver sido "setado"
+            // current.getPrev().setNext(q); // insiro o nó q na lista
+            // current.getNext().setPrev(q); 
+            // q.setNext(current.getNext()); // e removo o atual
+            // q.setPrev(current.getPrev());
+            current.setElement(aux);
+            break; // interrompo o loop
+          }
+          else if(current.getElement() == aux && q.getElement() == null){ // se q for achado e já tiver sido "setado"
+            current.getPrev().setNext(n); // insiro o nó n na lista
+            current.getNext().setPrev(n); 
+            n.setNext(current.getNext()); // e removo o atual
+            n.setPrev(current.getPrev());
+            break; // interrompo o loop
+          }
+  
+          current = current.getNext(); // passo para o proximo nó
+        }
+
       }
+      else  // se algum nó não estiver na lista
+        System.out.println("Elemento(s) não presente(s) na lista");
+        
+      
     }
     
     public String toString(){

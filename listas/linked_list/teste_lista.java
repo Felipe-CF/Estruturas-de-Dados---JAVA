@@ -17,8 +17,8 @@ public class teste_lista {
         // lista.replaceElement(no, 11);
         // System.out.println(lista);
 
-        Node<Object> no1 = new Node<Object>(3);
-        Node<Object> no2 = new Node<Object>(7);   
+        Node<Object> no1 = new Node<Object>(1);
+        Node<Object> no2 = new Node<Object>(10);   
         lista.swapElements(no1, no2);
         System.out.println(lista);
     }
