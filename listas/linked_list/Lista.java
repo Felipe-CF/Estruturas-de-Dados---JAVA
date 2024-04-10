@@ -184,6 +184,7 @@ public class Lista<E> {
         return temp; // retorno elemento removido ou null
     }
 
+
     public void swapElements(Node<E> n, Node<E> q) throws EmptyListException{
       if(isEmpty()) // se a lista for vazia...
         throw new EmptyListException("Lista vazia"); // imprime o erro
