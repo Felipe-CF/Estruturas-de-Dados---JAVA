@@ -1,9 +1,7 @@
 package sequencias;
 
-import vetor.array.Vetor;
-import listas.array.List;
 
-public interface Sequence<E> extends Vetor<E>, List<E>{
+public interface Sequence<E>{
     // metodos de transição
     public Node<E> atRank(int i);
     public int rankOf(Node<E> n);
