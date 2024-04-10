@@ -76,64 +76,173 @@ public class Sequencia<E> implements Sequence<E>{
         return r.getElement();
     }
 
-    public boolean isFirst(Node<E> n) throws EmptySequenceException{
-        return n.getElement() == header.getElement();
-      }
-      
-      public boolean isLast(Node<E> n) throws EmptySequenceException{
-        return n.getElement() == tail.getElement();
-      }
-      
-      public E first() throws EmptySequenceException{
-        return null;
+    public E removeAtRank(int i) throws IndexOutOfBoundsException, EmptySequenceException{
+        Node<E> removed = atRank(i);
+        removed.getPrev().setNext(removed.getNext());
+        removed.getNext().setPrev(removed.getPrev());
+        removed.setPrev(null);
+        removed.setNext(null);
+        size--;
+        return removed.getElement();
     }
-      
-      public E last() throws  EmptySequenceException{
-        return null;
+
+    public boolean isFirst(Node<E> n) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        return n.getElement() == header.getNext().getElement();
       }
       
-      public E before(Node<E> n) throws EmptySequenceException{
+    public boolean isLast(Node<E> n) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        return n.getElement() == tail.getNext().getElement();
+    }
+    
+    public E first() throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        return header.getNext().getElement();
+    }
+    
+    public E last() throws  EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        return tail.getNext().getElement();
+    }
+    
+    public E before(Node<E> n) throws EmptySequenceException{
         if(isEmpty())
             throw new EmptySequenceException("Sequencia vazia");
         if(n.getElement() == header.getNext().getElement())
             throw new IndexOutOfBoundsException("Sem elemento antes do primeiro");
-        
-        return null;
-        
-      }
-      
-      public E after(Node<E> n) throws EmptySequenceException{
-        return null;
-        
-      }
-  
-      public void insertAfter(Node<E> n, E e) throws  EmptySequenceException{
-        
-      }  
-  
-      public void insertFirst(Node<E> n) throws  EmptySequenceException{
-          
-      }
-  
-      public void insertLast(Node<E> n) throws  EmptySequenceException{
-        
-      }    
-      
-      public E remove(Node<E> n) throws EmptySequenceException{
-        return null;
-      }
-  
-      public E replaceElement(Node<E> n, E e) throws EmptySequenceException{
+        Node<E> current = header.getNext().getNext();
+        while(current != tail){
+            if(current.getElement() == n.getElement())
+                return current.getPrev().getElement();
+            current = current.getNext();
+        }
         return null;
     }
-  
-      public void swapElements(Node<E> n, Node<E> q) throws EmptySequenceException{
-  
-      }
-      
+    
+    public E after(Node<E> n) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        if(n.getElement() == tail.getPrev().getElement())
+            throw new IndexOutOfBoundsException("Sem elemento antes do primeiro");
+        Node<E> current = tail.getPrev().getPrev();
+        while(current != header){
+            if(current.getElement() == n.getElement())
+                return current.getNext().getElement();
+            current = current.getPrev();
+        }
+        return null;
+    }
 
-      public String toString(){
-        return "s";
-      }
+    public void insertAfter(Node<E> n, E e) throws  EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+
+        Node<E> newNode = new Node<E>(e);
+        Node<E> current = header.getNext();
+        while(current != tail){
+            if(current.getElement() == n.getElement()){
+                newNode.setPrev(current);
+                newNode.setNext(current.getNext());
+                current.getNext().setPrev(newNode);
+                current.setNext(newNode);
+                size++;
+                return;
+            }
+            current = current.getNext();
+        }
+        
+    }  
+
+    public void insertBefore(Node<E> n, E e) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+
+        Node<E> newNode = new Node<E>(e);
+        Node<E> current = header.getNext();
+        while(current != tail){
+            if(current.getElement() == n.getElement()){
+                newNode.setPrev(current.getPrev());
+                newNode.setNext(current);
+                current.getPrev().setNext(newNode);
+                current.setPrev(newNode);
+                size++;
+                return;
+            }
+            current = current.getNext();
+        }
+        
+    }
+
+    public void insertFirst(Node<E> n) throws  EmptySequenceException{
+        if(isEmpty()){
+            header.setNext(n);
+            tail.setPrev(n);
+            n.setPrev(header);
+            n.setNext(tail);
+        }
+        else{
+            n.setPrev(header);
+            n.setNext(header.getNext());
+            header.getNext().setPrev(n);
+            header.setNext(n);
+        }
+        size++;
+    }
+
+    public void insertLast(Node<E> n) throws  EmptySequenceException{
+        if(isEmpty()){
+            header.setNext(n);
+            tail.setPrev(n);
+            n.setPrev(header);
+            n.setNext(tail);
+        }
+        else{
+            n.setNext(tail);
+            n.setPrev(tail.getPrev());
+            tail.getPrev().setNext(n);
+            tail.setPrev(n);
+        }
+        size++;
+    }    
+    
+    public E remove(Node<E> n) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+
+        Node<E> current = header.getNext();
+        while(current != tail){
+            if(current.getElement() == n.getElement()){
+                current.getNext().setPrev(current.getPrev());
+                current.getPrev().setNext(current.getNext());
+                current.setNext(null);
+                current.setPrev(null);
+                size--;
+                return current.getElement();
+            }
+            current = current.getNext();
+        }
+        return null;
+    }
+
+    public E replaceElement(Node<E> n, E e) throws EmptySequenceException{
+        if(isEmpty())
+            throw new EmptySequenceException("Sequencia vazia");
+        
+        return null;
+    }
+
+    public void swapElements(Node<E> n, Node<E> q) throws EmptySequenceException{
+
+    }
+    
+
+    public String toString(){
+    return "s";
+    }
 
 }
