@@ -1,7 +1,7 @@
 package listas.linked_list;
 
 
-public class Lista<E> {
+public class Lista<E>  {
     protected int size;
     protected Node<E> first;
     protected Node<E> last;

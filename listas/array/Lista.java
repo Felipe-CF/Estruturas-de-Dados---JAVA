@@ -1,11 +1,11 @@
 package listas.array;
 import listas.linked_list.EmptyListException;
 
-public class Lista<E> {
+public class Lista<E> implements List<E> {
     protected Node<E>[] a;
     protected int size;
     protected int cap;
-    public Lista(){
+    public Lista(){ 
       size = 0;
       cap = 1;
       a =  new Node[cap];
@@ -20,37 +20,39 @@ public class Lista<E> {
     }
     
     public void increaseCapacity(){
-      cap*=2;
-        Node<E>[] newArray =  new Node[cap];
-        for(int i = 0; i < size; i++)
+      cap*=2;  // dobro o tamanho do array ...
+        Node<E>[] newArray =  new Node[cap]; // e instancio um novo
+        for(int i = 0; i < size; i++) // depois passo os elementos para ele...
             newArray[i] = a[i];
-        a = newArray;
+        a = newArray; // e mudo a referencia
     }
     
     public void decreaseCapacity(){
-      cap/=2;
-        Node<E>[] newArray =  new Node[cap];
-        for(int i = 0; i < size; i++)
+      cap/=2; // reduz o tamanho do array pela metade...
+        Node<E>[] newArray =  new Node[cap];// e instancio um novo
+        for(int i = 0; i < size; i++) // depois passo os elementos para ele...
             newArray[i] = a[i];
-        a = newArray;
+        a = newArray; // e mudo a referencia
     }
 
     public boolean isFirst(Node<E> n) throws EmptyListException{
-      return n.getElement() == a[0].getElement();
+      return n.getElement() == a[0].getElement(); // retorna a comparação
+      // com o elemento com o ndice 0
     }
     
     public boolean isLast(Node<E> n) throws EmptyListException{
-      return n.getElement() == a[size-1].getElement();
+      return n.getElement() == a[size-1].getElement(); // retorna a comparação 
+      // com o elemento com o maior indice do array
     }
     
     public E first() throws EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se vazio...
         throw new EmptyListException("Lista vazia");
       return a[0].getElement();
     }
     
     public E last() throws  EmptyListException{
-      if(isEmpty())
+      if(isEmpty()) // se vazio...
         throw new EmptyListException("Lista vazia");
       return a[size-1].getElement();
     }
