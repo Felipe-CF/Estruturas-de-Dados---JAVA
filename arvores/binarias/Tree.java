@@ -19,8 +19,11 @@ public interface Tree<E> {
     public E replace(nodeTree<E> n, E e) throws EmptyTreeException;
 
     // metodos de arvores binarias
-    public nodeTree<E> leftChild(nodeTree<E> n) throws EmptyTreeException;
+    public nodeTree<E> leftChild(nodeTree<E> n) throws EmptyTreeException; 
     public nodeTree<E> rightChild(nodeTree<E> n) throws EmptyTreeException;
     public boolean hasRight(nodeTree<E> n) throws EmptyTreeException;
     public boolean hasLeft(nodeTree<E> n) throws EmptyTreeException;
+
+    // metodos de inserção e remoção
+    // public nodeTree<E> addRoot(E e) throws 
 }

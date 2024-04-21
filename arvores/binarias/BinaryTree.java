@@ -4,18 +4,16 @@ import java.util.Iterator;
 
 public class BinaryTree<E> implements Tree<E> {
     protected nodeTree<E> root;
-    protected int nos;
     public BinaryTree(){
         root = null;
-        nos = 0;
     }
 
     public boolean isEmpty(){
-        return nos == 0;
+        return root == null;
     }
 
-    public int size(){
-        return nos;
+    public int size(){ // implementar
+        return 1;
     }
 
     public nodeTree<E> root() throws EmptyTreeException{
@@ -32,21 +30,59 @@ public class BinaryTree<E> implements Tree<E> {
         return n.getParent();
     }
 
-    public Iterator<E> children(nodeTree<E> n) throws EmptyTreeException{
-        if(isEmpty())
-            throw new EmptyTreeException("Arvore vazia");
+    // public Iterator<E> children(nodeTree<E> n) throws EmptyTreeException{
+    //     if(isEmpty())
+    //         throw new EmptyTreeException("Arvore vazia");
         
-    }
+    // }
 
-    public boolean isExternal() throws EmptyTreeException {
+    public boolean isExternal(nodeTree<E> n) throws EmptyTreeException {
         if(isEmpty())
             throw new EmptyTreeException("Arvore vazia");
-        return raiz.getFilhoEsquerda();
+        return (n.getLeft() == null) && (n.getRight() == null);
+    }
+
+    public boolean isInternal(nodeTree<E> n) throws EmptyTreeException {
+        if(isEmpty())
+            throw new EmptyTreeException("Arvore vazia");
+        return (n.getLeft() != null) && (n.getRight() != null);
+    }
+
+    public boolean isRoot(nodeTree<E> r) throws EmptyTreeException{
+        if(isEmpty())
+            throw new EmptyTreeException("Arvore vazia");
+        if(r.getElement() == root.getElement())
+            return true;
+        return false;
+    }
+
+    public int depth(nodeTree<E> n) throws EmptyTreeException{ // imp
+        return 1;
+    }
+
+    public E replace(nodeTree<E> n, E e) throws EmptyTreeException{
+        return null;
+    }
+
+    public nodeTree<E> leftChild(nodeTree<E> n) throws EmptyTreeException{
+        return root;
+    } 
+
+    public nodeTree<E> rightChild(nodeTree<E> n) throws EmptyTreeException{
+        return root;
+    }
+
+    public boolean hasRight(nodeTree<E> n) throws EmptyTreeException{
+        return false;
+    }
+
+    public boolean hasLeft(nodeTree<E> n) throws EmptyTreeException{
+        return false;
+    }
+
+    public String toString(){
+        return "i";
     }
 
 
-    public nodeTree<E> find(nodeTree<E> n, nodeTree<E> r) throws EmptyTreeException{
-        if(n.getElement() == r.getElement())
-            return n.getParent();
-    }
 }
