@@ -71,9 +71,18 @@ public class ArvorePesquisa<E> {
     }
 
     public No<E> buscaNo(No<E> r, No<E> n) throws Exception{
-        if (r.getFilhoEsquerdo().getElemento() <  n.getElemento()) {
+        if(r.getElemento() == null)
+            throw new Exception("elemento não encontrado");
+
+        if(r.getElemento() == n.getElemento())
+            return r;
+            
+        if (r.getElemento() >  n.getElemento() && r.getFilhoEsquerdo() != null) 
             buscaNo(r.getFilhoEsquerdo(), n);
-        }
+        
+
+        if (r.getElemento() <  n.getElemento() && r.getFilhoDireito() != null) 
+            buscaNo(r.getFilhoDireito(), n);
         
         
 
